@@ -1,28 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useContext } from "react";
 import axios from "axios";
 import Hero from "../../components/Hero/Hero";
 import Movies from "../../components/Movies/Movies";
 import ENDPOINTS from "../../utils/constants/endpoint";
+import MoviesContext from "../../components/context/MoviesContext";
 
 function PopularMovie() {
-  const [movies, setMovies] = useState([]);
+  const { setMovies } = useContext(MoviesContext);
 
   useEffect(() => {
     async function fetchPopularMovies() {
-      const API_KEY = import.meta.env.VITE_API_KEY;
-      // const URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`;
-        // const response = await axios.get(URL);
+      try {
         const response = await axios(ENDPOINTS.POPULAR);
         setMovies(response.data.results);
+      } catch (error) {
+        console.error("Error fetching popular movies:", error);
+      }
     }
 
     fetchPopularMovies();
-  }, []);
+  }, [setMovies]);
 
   return (
     <div>
       <Hero />
-      <Movies movies={movies} />
+      <Movies title="Popular Movies" />
     </div>
   );
 }
