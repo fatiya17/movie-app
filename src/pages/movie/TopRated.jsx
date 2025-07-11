@@ -1,11 +1,11 @@
-// src/pages/TopRated/TopRated.jsx
-import { useEffect, useState } from "react";
+import { useEffect, useContext } from "react";
 import axios from "axios";
 import Hero from "../../components/Hero/Hero";
 import Movies from "../../components/Movies/Movies";
+import MoviesContext from "../../components/context/MoviesContext";
 
 function TopRated() {
-  const [movies, setMovies] = useState([]);
+  const { setMovies } = useContext(MoviesContext);
 
   useEffect(() => {
     async function fetchTopRatedMovies() {
@@ -21,12 +21,12 @@ function TopRated() {
     }
 
     fetchTopRatedMovies();
-  }, []);
+  }, [setMovies]);
 
   return (
     <div>
       <Hero />
-      <Movies movies={movies} />
+      <Movies title="Top Rated Movies" />
     </div>
   );
 }
